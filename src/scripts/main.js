@@ -161,6 +161,10 @@ Game.showWinMessage = false;
 Game.score = 0;
 
 buttonStart.onclick = function() {
+  if (window.innerWidth <= 500) {
+    screenControl.style.display = 'flex';
+  }
+
   Game.insertRandomNumber();
   document.querySelector('.message-start').classList.add('hidden');
   buttonStart.classList.remove('start');

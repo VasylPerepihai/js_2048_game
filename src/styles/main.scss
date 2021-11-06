@@ -200,9 +200,7 @@ h1 {
   justify-content: space-between;
   padding: 20px 0;
 
-  @media (max-width: 500px) {
-    display: flex;
-  }
+  transition: all 0.3s;
 }
 
 .screen-control {
