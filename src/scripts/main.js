@@ -5,6 +5,7 @@
 const field = document.querySelector('.game-field').tBodies[0];
 const scoreField = document.querySelector('.controls .game-score');
 const buttonStart = document.querySelector('button.start');
+const screenControl = document.querySelector('.screen-control-container');
 
 class Game {
   static randomWithProbability() {
@@ -79,10 +80,12 @@ class Game {
     });
   }
 
-  static rotateRight90deg() {
-    this.valuesArray = this.valuesArray[0].map(
-      (val, index) => this.valuesArray.map(row => row[index]).reverse()
-    );
+  static rotateRight90deg(times) {
+    for (let i = 1; i <= times; i++) {
+      this.valuesArray = this.valuesArray[0].map(
+        (val, index) => this.valuesArray.map(row => row[index]).reverse()
+      );
+    }
   };
 
   static moveUp() {
@@ -183,41 +186,31 @@ buttonStart.onclick = function() {
   };
 };
 
-document.addEventListener('keydown', (e) => {
-  if (!['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.code)) {
-    return;
-  }
-
-  switch (e.code) {
+const clickHandler = (buttonName) => {
+  switch (buttonName) {
     case 'ArrowUp':
       Game.moveUp();
       Game.renderGameField(field);
       break;
 
     case 'ArrowDown':
-      Game.rotateRight90deg();
-      Game.rotateRight90deg();
+      Game.rotateRight90deg(2);
       Game.moveUp();
-      Game.rotateRight90deg();
-      Game.rotateRight90deg();
+      Game.rotateRight90deg(2);
       Game.renderGameField(field);
       break;
 
     case 'ArrowLeft':
-      Game.rotateRight90deg();
+      Game.rotateRight90deg(1);
       Game.moveUp();
-      Game.rotateRight90deg();
-      Game.rotateRight90deg();
-      Game.rotateRight90deg();
+      Game.rotateRight90deg(3);
       Game.renderGameField(field);
       break;
 
     case 'ArrowRight':
-      Game.rotateRight90deg();
-      Game.rotateRight90deg();
-      Game.rotateRight90deg();
+      Game.rotateRight90deg(3);
       Game.moveUp();
-      Game.rotateRight90deg();
+      Game.rotateRight90deg(1);
       Game.renderGameField(field);
       break;
   }
@@ -232,6 +225,16 @@ document.addEventListener('keydown', (e) => {
   };
 
   scoreField.innerText = Game.score;
+};
 
+document.addEventListener('keydown', (e) => {
+  if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.code)) {
+    clickHandler(e.code);
+    e.preventDefault();
+  }
+});
+
+screenControl.addEventListener('click', (e) => {
+  clickHandler(e.target.name);
   e.preventDefault();
 });
